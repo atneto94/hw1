@@ -130,8 +130,6 @@ CREATE TABLE movies (
     studio_id INTEGER
 );
 
--- In this case, I don't think it is essential to have the domain actors,
--- But in the real world, I would create because we could add future relevant data for each actor like date of birth, etc.
 CREATE TABLE actors (
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
     name TEXT
