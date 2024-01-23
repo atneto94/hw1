@@ -127,7 +127,7 @@ CREATE TABLE movies (
     title TEXT,
     year_released INTEGER,
     rating TEXT,
-    studio_name TEXT
+    studio_id INTEGER
 );
 
 -- In this case, I don't think it is essential to have the domain actors,
@@ -139,8 +139,8 @@ CREATE TABLE actors (
 
 CREATE TABLE roles (
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
-    movie_name TEXT,
-    actor_name TEXT,
+    movie_id INTEGER,
+    actor_id INTEGER,
     role_name TEXT
 );
 
@@ -158,22 +158,22 @@ INSERT INTO movies (
     title,
     year_released,
     rating,
-    studio_name
+    studio_id
 ) VALUES (
     "Batman Begins",
     2005,
     "PG-13",
-    "Warner Bros."
+    1
 ),
 (   "The Dark Knight",
     2008,
     "PG-13",
-    "Warner Bros."
+    1
 ),
 (   "The Dark Knight Rises",
     2012,
     "PG-13",
-    "Warner Bros."
+    1
 );
 
 INSERT INTO actors (
@@ -193,25 +193,25 @@ INSERT INTO actors (
 );
 
 INSERT INTO roles (
-    movie_name,
-    actor_name,
-    role_name 
+    movie_id,
+    actor_id,
+    role_name
 ) VALUES (
-    "Batman Begins", "Christian Bale", "Bruce Wayne"),
-    ("Batman Begins", "Michael Caine", "Alfred"),
-    ("Batman Begins", "Liam Neeson", "Ra's Al Ghul"),
-    ("Batman Begins", "Katie Holmes", "Rachel Dawes"),
-    ("Batman Begins", "Gary Oldman", "Commissioner Gordon"),
-    ("The Dark Knight", "Christian Bale", "Bruce Wayne"),
-    ("The Dark Knight", "Heath Ledger", "Joker"),
-    ("The Dark Knight", "Aaron Eckhart", "Harvey Dent"),
-    ("The Dark Knight", "Michael Caine", "Alfred"),
-    ("The Dark Knight", "Maggie Gyllenhaal", "Rachel Dawes"),
-    ("The Dark Knight Rises", "Christian Bale", "Bruce Wayne"),
-    ("The Dark Knight Rises", "Gary Oldman", "Commissioner Gordon"),
-    ("The Dark Knight Rises", "Tom Hardy", "Bane"),
-    ("The Dark Knight Rises", "Joseph Gordon-Levitt", "John Blake"),
-    ("The Dark Knight Rises", "Anne Hathaway", "Selina Kyle"
+    1, 1, "Bruce Wayne"),
+    (1, 2, "Alfred"),
+    (1, 3, "Ra's Al Ghul"),
+    (1, 4, "Rachel Dawes"),
+    (1, 5, "Commissioner Gordon"),
+    (2, 1, "Bruce Wayne"),
+    (2, 6, "Joker"),
+    (2, 7, "Harvey Dent"),
+    (2, 2, "Alfred"),
+    (2, 8, "Rachel Dawes"),
+    (3, 1, "Bruce Wayne"),
+    (3, 5, "Commissioner Gordon"),
+    (3, 9, "Bane"),
+    (3, 10, "John Blake"),
+    (3, 11, "Selina Kyle"
 );
 
 -- Prints a header for the movies output
@@ -222,7 +222,9 @@ INSERT INTO roles (
 -- The SQL statement for the movies output
 -- TODO!
 
-SELECT title, year_released, rating, studio_name FROM movies;
+SELECT movies.title, movies.year_released, movies.rating, studios.name 
+FROM movies INNER JOIN studios
+ON studios.id = movies.studio_id;
 
 -- Prints a header for the cast output
 .print ""
@@ -234,5 +236,8 @@ SELECT title, year_released, rating, studio_name FROM movies;
 -- The SQL statement for the cast output
 -- TODO!
 
-SELECT movie_name, actor_name, role_name FROM roles;
+SELECT movies.title, actors.name, roles.role_name
+FROM movies INNER JOIN roles
+ON movies.id = roles.movie_id
+INNER JOIN actors ON actors.id = roles.actor_id;
 
